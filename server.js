@@ -3,11 +3,15 @@ const app = require('./app')
 
 const port = process.env.PORT || 6969
 
-const server = http.createServer(app, (req, res) => {
-	res.send(JSON.stringify({ Hello: 'World' }))
+const server = http.createServer(app, (req, res) => {	
+	res.statusCode = 200;
+	res.setHeader('Content-Type', 'text/html');
+	res.end('<h1>Hello World</h1>');
 })
 
-server.listen(port, () => console.log(`Listening on ${ port }`))
+server.listen(port, () => {
+	console.log(`Listening on ${ port }`)
+})
 
 // var express = require('express');
 // var port = process.env.PORT || 3000;
