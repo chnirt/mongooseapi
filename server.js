@@ -14,6 +14,7 @@ var express = require('express');
 var http = require('http');
 var app = express();
 var server = http.createServer(app);
+const port = process.env.PORT || 6969
 server.listen(port, () => {
   console.log(`Listening on ${ port }`)
 })
