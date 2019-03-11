@@ -1,24 +1,26 @@
-var express = require('express');
-const https = require('https')
-const app = require('./app')
-
-const port = process.env.PORT || 6969
-
-const server = https.createServer(app)
-
-server.listen(port, () => {
-  console.log(`Listening on ${ port }`)
-})
-
-
 // var express = require('express');
-// var http = require('http');
-// var app = express();
-// var server = http.createServer(app);
+// const https = require('https')
+// const app = require('./app')
+
 // const port = process.env.PORT || 6969
+
+// const server = https.createServer(app)
+
 // server.listen(port, () => {
 //   console.log(`Listening on ${ port }`)
 // })
+
+
+var express = require('express');
+var http = require('http');
+var app = express();
+var server = http.createServer(app, (req, res) => {
+  res.send('Hello World\n');
+});
+const port = process.env.PORT || 6969
+server.listen(port, () => {
+  console.log(`Listening on ${ port }`)
+})
 
 
 // var express = require('express');
