@@ -1,13 +1,23 @@
-const http = require('http')
-const app = require('./app')
+// const http = require('http')
+// const app = require('./app')
 
-const port = process.env.PORT || 6969
+// const port = process.env.PORT || 6969
 
-const server = http.createServer(app)
+// const server = http.createServer(app)
 
+// server.listen(port, () => {
+//   console.log(`Listening on ${ port }`)
+// })
+
+
+var express = require('express');
+var http = require('http');
+var app = express();
+var server = http.createServer(app);
 server.listen(port, () => {
   console.log(`Listening on ${ port }`)
 })
+
 
 // var express = require('express');
 // var port = process.env.PORT || 3000;
