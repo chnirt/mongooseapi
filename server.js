@@ -3,14 +3,10 @@ const app = require('./app')
 
 const port = process.env.PORT || 6969
 
-const server = http.createServer((req, res) => {	
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/html');
-	res.end('<h1>Hello World</h1>');
-})
+const server = http.createServer(app)
 
 server.listen(port, () => {
-	console.log(`Listening on ${ port }`)
+  console.log(`Listening on ${ port }`)
 })
 
 // var express = require('express');
