@@ -5,7 +5,17 @@ const port = process.env.PORT || 6969
 
 const server = http.createServer(app)
 
-server.listen(port, () => console.log(`Listening on ${ port }`))
+app.get('/', function (req, res) {
+ res.send(JSON.stringify({ Hello: 'World'}));
+});
+
+app.listen(port, function () {
+ console.log('Example app listening on port !');
+});
+
+// server.listen(port, () => console.log(`Listening on ${ port }`))
+
+
 
 // const express = require('express');
 
