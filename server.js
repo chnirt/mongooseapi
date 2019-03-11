@@ -15,7 +15,9 @@ var express = require('express');
 var http = require('http');
 var app = express();
 var server = http.createServer(app, (req, res) => {
-  res.send('Hello World\n');
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World\n');
 });
 const port = process.env.PORT || 6969
 server.listen(port, () => {
