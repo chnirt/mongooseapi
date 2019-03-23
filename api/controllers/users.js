@@ -15,11 +15,10 @@ module.exports = {
   },
   createUser: async (req, res, next) => {
     try {
-      console.log(req.value)
-      // const newUser = new User(req.body)
+      const newUser = new User(req.value.body)
       // newUser.avatarImage = req.file.path
-      // const user = await newUser.save()
-      // res.status(201).json(user)
+      const user = await newUser.save()
+      res.status(201).json(user)
     } catch (error) {
       next(error)
     }
