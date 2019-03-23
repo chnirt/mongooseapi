@@ -1,14 +1,24 @@
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    match: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ 
-  },
-  password: { type: String, required: true },
+  email: { type: String },
+  password: { type: String },
+  avatarImage: { type: String },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'post'
+    }
+  ]
+  // name: { type:String},
+  // username: { type:String},
+  // website: { type: String},
+  // bio: { type: String},
+  // phone: { type: String},
+  // role: { type: Number, default: 0},
+  // authenticated: { type: Number, default: 0},
+  // isCreated: { type: Date, default: Date.now},
+  // isUpdated: { type: Date, default: Date.now}
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('user', userSchema)

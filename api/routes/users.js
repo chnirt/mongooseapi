@@ -1,20 +1,54 @@
 const express = require('express')
 const router = express.Router()
 
+const UsersController = require('../controllers/users')
+
+const {
+  validateParam,
+  validateBody,
+  schemas
+} = require('../helpers/routeHelpers')
+
+const upload = require('../config/multer')
+
 const checkAuth = require('../middleware/check-auth')
 
-const UsersController = require('../controller/users')
+router
+  .route('/')
+  .get(UsersController.getUsers)
+  .post(
+    validateBody(schemas.userSchema),
+    upload.single('avatarImage'),
+    UsersController.createUser)
 
-router.get('/', checkAuth, UsersController.users_get_all)
+router
+  .route('/:userId')
+  .get(
+    validateParam(schemas.idSchema, 'userId'),
+    UsersController.getUser)
+  .put([
+      validateParam(schemas.idSchema, 'userId'),
+      validateBody(schemas.userSchema)
+    ],
+    UsersController.replaceUser)
+  .patch([
+      validateParam(schemas.idSchema, 'userId'),
+      validateBody(schemas.userOptionalSchema)
+    ],
+    // upload.single('avatarImage'), 
+    UsersController.updateUser)
+  .delete(UsersController.deleteUser)
 
-router.post('/signup', UsersController.users_signup)
-
-router.post('/login', UsersController.users_login)
-
-router.get('/:userId', checkAuth, UsersController.users_get_user)
-
-router.patch('/:userId', checkAuth, UsersController.users_update_user)
-
-router.delete('/:userId', checkAuth, UsersController.users_delete_user)
+router
+  .route('/:userId/posts')
+  .get(
+    validateParam(schemas.idSchema, 'userId'),
+    UsersController.getUserPosts)
+  .post([
+      validateParam(schemas.idSchema, 'userId'),
+      validateBody(schemas.userPostSchema)
+    ],
+    UsersController.createUserPost)
+// router.post('/login', UsersController.users_login)
 
 module.exports = router

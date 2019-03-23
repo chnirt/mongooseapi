@@ -3,7 +3,7 @@ const router = express.Router()
 const multer = require('multer')
 const checkAuth = require('../middleware/check-auth')
 
-const AvatarsController = require('../controller/avatars')
+const AvatarsController = require('../controllers/avatars')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -23,7 +23,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 const upload = multer({
-  storage: storage, 
+  storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5
   },
