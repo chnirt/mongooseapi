@@ -2,17 +2,18 @@ const express = require('express')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-require('dotenv').config()
+// require('dotenv').config()
 
 const app = express()
 
 const userRoutes = require('./api/routes/users')
 const postRoutes = require('./api/routes/posts')
-const avatarRoutes = require('./api/routes/avatars')
-const productRoutes = require('./api/routes/products')
+
+//Promise
+mongoose.Promise = global.Promise
 
 //Mongoose connect
-mongoose.connect(process.env.MONGOLAB_URI, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true
 }, (err) => {
   if (err) {
@@ -22,9 +23,6 @@ mongoose.connect(process.env.MONGOLAB_URI, {
   }
 })
 mongoose.set('useCreateIndex', true)
-
-//Promise
-mongoose.Promise = global.Promise
 
 //Logger middleware
 app.use(logger('dev'))
@@ -50,9 +48,7 @@ app.use((req, res, next) => {
 })
 
 //Routes
-app.use('/products', productRoutes)
 app.use('/users', userRoutes)
-app.use('/avatars', avatarRoutes)
 app.use('/posts', postRoutes)
 
 //Not found

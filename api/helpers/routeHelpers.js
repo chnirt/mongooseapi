@@ -47,6 +47,12 @@ module.exports = {
       email: Joi.string().email(),
       password: Joi.string()
     }),
+    putUserSchema: Joi.object().keys({
+      email: Joi.string().email().required()
+    }),
+    patchUserSchema: Joi.object().keys({
+      email: Joi.string().email()
+    }),
     userPostSchema: Joi.object().keys({
       postImage: Joi.string().required(),
       content: Joi.string().required()
