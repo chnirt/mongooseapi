@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
   posts: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'post'
-  }]
+  }],
   // name: { type:String},
   // username: { type:String},
   // website: { type: String},

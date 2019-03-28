@@ -41,7 +41,8 @@ module.exports = {
     }),
     userSchema: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required()
+      password: Joi.string().required(),
+      unix: Joi.date().timestamp('unix')
     }),
     userOptionalSchema: Joi.object().keys({
       email: Joi.string().email(),
@@ -51,7 +52,8 @@ module.exports = {
       email: Joi.string().email().required()
     }),
     patchUserSchema: Joi.object().keys({
-      email: Joi.string().email()
+      email: Joi.string().email(),
+      password: Joi.string()
     }),
     userPostSchema: Joi.object().keys({
       postImage: Joi.string().required(),

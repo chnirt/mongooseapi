@@ -45,10 +45,10 @@ module.exports = {
     res.status(200).json(users)
   },
   createUser: async (req, res, next) => {
-    const user = await User.find({
+    const user = await User.findOne({
       email: req.value.body.email
     })
-    if (user.length >= 1) {
+    if (user) {
       res.status(409).json({
         message: 'Mail exists'
       })
@@ -84,26 +84,13 @@ module.exports = {
       userId
     } = req.value.params
     const newUser = req.value.body
-    // bcrypt.hash(req.value.body.password, 10, async (err, hash) => {
-    //   if (err) {
-    //     console.log(err)
-    //     res.status(500).json({
-    //       error: err
-    //     })
-    //   }
-    //   newUser.password = hash
-    //   // newUser.avatarImage = req.file.path
-    //   const result = await User.findByIdAndUpdate(userId, newUser)
-    //   if (!result) {
-    //     res.status(404).json({
-    //       message: 'No valid entry found for provided ID'
-    //     })
-    //   }
-    //   res.status(200).json({
-    //     success: 'Success'
-    //   })
-    // })
+    // newUser.avatarImage = req.file.path
     const result = await User.findByIdAndUpdate(userId, newUser)
+    if (!result) {
+      res.status(404).json({
+        message: 'No valid entry found for provided ID'
+      })
+    }
     res.status(200).json({
       success: 'Success'
     })
@@ -113,26 +100,16 @@ module.exports = {
       userId
     } = req.value.params
     const newUser = req.value.body
-    // bcrypt.hash(req.value.body.password, 10, async (err, hash) => {
-    //   if (err) {
-    //     console.log(err)
-    //     res.status(500).json({
-    //       error: err
-    //     })
-    //   }
-    //   newUser.password = hash
-    //   // newUser.avatarImage = req.file.path
-    //   const result = await User.findByIdAndUpdate(userId, newUser)
-    //   if (!result) {
-    //     res.status(404).json({
-    //       message: 'No valid entry found for provided ID'
-    //     })
-    //   }
-    //   res.status(200).json({
-    //     success: 'Success'
-    //   })
-    // })
+    if (newUser.password) {
+      newUser.password = bcrypt.hashSync(newUser.password, 10);
+    }
+    // newUser.avatarImage = req.file.path
     const result = await User.findByIdAndUpdate(userId, newUser)
+    if (!result) {
+      res.status(404).json({
+        message: 'No valid entry found for provided ID'
+      })
+    }
     res.status(200).json({
       success: 'Success'
     })
