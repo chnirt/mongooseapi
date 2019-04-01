@@ -12,12 +12,13 @@ const {
 const upload = require('../config/multer')
 
 const checkAuth = require('../middlewares/check-auth')
+const passport = require('passport')
+const passportConf = require('../config/passport')
 
 router
   .route('/')
   .get(UsersController.getUsers)
   .post(
-    upload.single('file'),
     validateBody(schemas.userSchema),
     UsersController.createUser)
 
@@ -42,7 +43,12 @@ router
     UsersController.updateUser)
   .delete(UsersController.deleteUser)
 
-router.route('/login').post(validateBody(schemas.userSchema), UsersController.loginUser)
+router
+  .route('/login')
+  .post(
+    validateBody(schemas.authSchema),
+    passport.authenticate('local', { session: false }),
+    UsersController.loginUser)
 
 router
   .route('/:userId/posts')

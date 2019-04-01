@@ -39,10 +39,13 @@ module.exports = {
     idSchema: Joi.object().keys({
       param: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
     }),
+    authSchema: Joi.object().keys({
+      email: Joi.string().email().required(),
+      password: Joi.string().required()
+    }),
     userSchema: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      unix: Joi.date().timestamp('unix')
+      password: Joi.string().required()
     }),
     userOptionalSchema: Joi.object().keys({
       email: Joi.string().email(),

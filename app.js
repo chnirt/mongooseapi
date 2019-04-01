@@ -1,64 +1,86 @@
 const express = require('express')
-const logger = require('morgan')
 const bodyParser = require('body-parser')
+const logger = require('morgan')
 const mongoose = require('mongoose')
-// require('dotenv').config()
+const cors = require('cors')
+const session = require('express-session')
+const helmet = require('helmet')
+const path = require('path')
 
+require('dotenv').config()
+
+const userRoutes = require('./server/routes/users')
+const postRoutes = require('./server/routes/posts')
+
+// Requiring passport as we've configured it
+var passport = require("./server/config/passport")
+
+// Configure mongoose's promise to global promise
+mongoose.promise = global.Promise
+
+// Configure isProduction variable
+const isProduction = process.env.NODE_ENV === 'production'
+
+// Initiate our app
 const app = express()
 
-const userRoutes = require('./api/routes/users')
-const postRoutes = require('./api/routes/posts')
+// Configure our app
+// Allow cross-origin requests
+app.use(cors())
+// Use morgan to log requests to the console
+app.use(logger('dev'))
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// Parse application/json
+app.use(bodyParser.json())
+// We need to use sessions to keep track of our user's login status
+app.use(session({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+// Secure your Express apps
+app.use(helmet())
 
-//Promise
-mongoose.Promise = global.Promise
+app.use(express.static(path.join(__dirname, 'public')))
+app.use('/uploads', express.static('uploads'))
+app.use(session({
+  secret: 'passport-tutorial',
+  cookie: {
+    maxAge: 60000
+  },
+  resave: false,
+  saveUninitialized: false
+}))
 
-//Mongoose connect
+if (!isProduction) {
+  app.use(errorHandler())
+}
+
+// Configure Mongoose
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  // useFindAndModify: false,
+  useCreateIndex: true,
 }, (err) => {
   if (err) {
     console.log('Error ' + err)
   } else {
-    console.log("Connected successfully to server")
+    console.log("Connected successfully to server ☁️")
   }
 })
-mongoose.set('useCreateIndex', true)
+mongoose.set('debug', true)
 
-//Logger middleware
-app.use(logger('dev'))
-
-//Static file
-app.use('/uploads', express.static('uploads'))
-
-//Parse json
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: false
-}))
-
-//CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
-    return res.status(201).json({})
-  }
-  next()
-})
-
-//Routes
+// Routes
 app.use('/users', userRoutes)
 app.use('/posts', postRoutes)
 
-//Not found
+// Not found
 app.use((req, res, next) => {
   const error = new Error('Not found.')
   error.status = 404
   next(error)
 })
 
-//Error 500 or ...
+// Error 500 or ...
 app.use((error, req, res, next) => {
   res.status(error.status || 500)
   res.json({

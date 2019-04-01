@@ -6,38 +6,17 @@ const Post = require('../models/post')
 
 module.exports = {
   loginUser: async (req, res, next) => {
-    const user = await User.findOne({
-      email: req.value.body.email
-    })
-    if (!user) {
-      res.status(401).json({
-        message: 'Auth failed, email not exist'
+    const user = req.user
+    const token = jwt.sign({
+      iss: 'Chnirthgram',
+      sub: user._id,
+    },
+      process.env.SECRET_KEY, {
+        expiresIn: '30d'
       })
-    }
-    bcrypt.compare(req.value.body.password, user.password, (err, result) => {
-      if (err) {
-        console.log(err)
-        res.status(500).json({
-          error: err
-        })
-      }
-      if (result) {
-        const token = jwt.sign({
-            email: user.email,
-            userId: user._id,
-          },
-          process.env.SECRET_KEY, {
-            expiresIn: '30d'
-          })
-        res.status(200).json({
-          message: 'Auth successfully',
-          token: token
-        })
-      } else {
-        res.status(401).json({
-          message: 'Auth failed, dont match'
-        })
-      }
+    res.status(200).json({
+      message: 'Auth successfully',
+      token: token
     })
   },
   getUsers: async (req, res, next) => {
@@ -47,24 +26,16 @@ module.exports = {
   createUser: async (req, res, next) => {
     const user = await User.findOne({
       email: req.value.body.email
+      // email: req.body.email
     })
     if (user) {
       res.status(409).json({
         message: 'Mail exists'
       })
     } else {
-      bcrypt.hash(req.value.body.password, 10, async (err, hash) => {
-        if (err) {
-          console.log(err)
-          res.status(500).json({
-            error: err
-          })
-        }
-        const newUser = new User(req.value.body)
-        newUser.password = hash
-        const user = await newUser.save()
-        res.status(201).json(user)
-      })
+      const newUser = new User(req.value.body)
+      const user = await newUser.save()
+      res.status(201).json(user)
     }
   },
   getUser: async (req, res, next) => {
