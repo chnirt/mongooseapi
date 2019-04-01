@@ -16,7 +16,7 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:6969/users')
+    fetch('https://chinmongooseapi.herokuapp.com/users')
       .then(res => res.json())
       .then(res => console.log(res))
       .catch(err => err)
