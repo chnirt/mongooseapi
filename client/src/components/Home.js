@@ -9,7 +9,7 @@ export class Home extends Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:6969/users')
+    fetch('/users')
       .then(res => res.json())
       .then(res => {
         console.log(res)
