@@ -8,19 +8,6 @@ import Login from './components/Auth/Login'
 import Register from './components/Auth/Register'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      result: ''
-    }
-  }
-  componentDidMount() {
-    fetch('https://chinmongooseapi.herokuapp.com/users')
-      .then(res => res.json())
-      .then(res => console.log(res))
-      .catch(err => err)
-  }
   render() {
     return (
       <BrowserRouter>
