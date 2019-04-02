@@ -21,6 +21,20 @@ mongoose.promise = global.Promise
 // Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production'
 
+// Configure Mongoose
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  // useFindAndModify: false,
+  useCreateIndex: true,
+}, (err) => {
+  if (err) {
+    console.log('Error ' + err)
+  } else {
+    console.log("Connected successfully to server ☁️")
+  }
+})
+mongoose.set('debug', true)
+
 // Initiate our app
 const app = express()
 
@@ -39,8 +53,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 // Secure your Express apps
 app.use(helmet())
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')))
 
-app.use(express.static(path.join(__dirname, 'public')))
 app.use('/uploads', express.static('uploads'))
 app.use(session({
   secret: 'passport-tutorial',
@@ -55,19 +70,11 @@ if (!isProduction) {
   app.use(errorHandler())
 }
 
-// Configure Mongoose
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  // useFindAndModify: false,
-  useCreateIndex: true,
-}, (err) => {
-  if (err) {
-    console.log('Error ' + err)
-  } else {
-    console.log("Connected successfully to server ☁️")
-  }
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
 })
-mongoose.set('debug', true)
 
 // Routes
 app.use('/users', userRoutes)
