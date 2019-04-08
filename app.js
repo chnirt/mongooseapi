@@ -63,8 +63,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 // Secure your Express apps
 app.use(helmet());
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, "client/public")));
 
 app.use("/uploads", express.static("uploads"));
 app.use(
@@ -86,12 +84,21 @@ if (!isProduction) {
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
+if (process.env.NODE_ENV === "production") {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, "client/build")));
+  // Handle React routing, return all requests to React app
+  app.get("*", function(req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  });
+}
+
 // Not found
-app.use((req, res, next) => {
-  const error = new Error("Not found.");
-  error.status = 404;
-  next(error);
-});
+// app.use((req, res, next) => {
+//   const error = new Error("Not found.");
+//   error.status = 404;
+//   next(error);
+// });
 
 // Error 500 or ...
 app.use((error, req, res, next) => {
