@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import routes from "../routes";
 import PrivateRoute from "../utils/PrivateRoute";
 
@@ -13,7 +13,6 @@ const ScreensRoot = () => (
           <Route key={i} {...route} />
         )
       )}
-      <Redirect to="/login" />
     </Switch>
   </BrowserRouter>
 );

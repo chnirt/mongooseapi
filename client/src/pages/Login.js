@@ -35,6 +35,7 @@ export class Login extends Component {
       })
       .catch(err => {
         const { status } = err.response;
+
         if (status === 401) {
           this.setState({
             message: "Email or Password is not correct."

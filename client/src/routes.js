@@ -2,7 +2,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 // Application
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 // USER
 import ScreenUser from "./pages/User/Index";
@@ -30,17 +30,14 @@ const routes = [
       {
         label: "User List",
         path: "/users",
+        exact: true,
         component: ScreenUserList
       },
       {
-        label: "Update User",
+        label: "Create User",
         path: "/users/create",
+        exact: true,
         component: ScreenUserForm
-      },
-      {
-        label: "User Index",
-        path: "/users",
-        component: ScreenUser
       }
     ]
   }

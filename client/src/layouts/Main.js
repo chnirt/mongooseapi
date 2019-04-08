@@ -1,25 +1,20 @@
-import React from 'react'
-import HeaderLayout from './HeaderLayout'
-import SiderLayout from './SiderLayout'
-import FooterLayout from './FooterLayout'
-
-import { Layout, Menu, Breadcrumb, Icon } from 'antd'
-
-const { SubMenu } = Menu
-const { Header, Content, Sider } = Layout
+import React from "react";
+import "./Main.css";
+import HeaderLayout from "./HeaderLayout";
+import SiderLayout from "./SiderLayout";
+import FooterLayout from "./FooterLayout";
 
 const Main = ({ children }) => {
   return (
-    <div>
+    <>
       <HeaderLayout />
-      <Layout>
-        <SiderLayout />
-        {children}
-      </Layout>
-
+      {/* <Layout> */}
+      <SiderLayout />
+      {children}
+      {/* </Layout> */}
       <FooterLayout />
-    </div>
-  )
-}
+    </>
+  );
+};
 
-export default Main
+export default Main;

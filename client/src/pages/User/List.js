@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export class List extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      users: '',
-    }
+      users: ""
+    };
   }
 
   componentDidMount() {
-    fetch('https://reqres.in/api/users')
+    fetch("https://reqres.in/api/users")
       .then(res => res.json())
       .then(res => {
-        this.setState({ users: res.data })
+        this.setState({ users: res.data });
       })
       .catch(err => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   render() {
-    const { users } = this.state
+    const { users } = this.state;
     return (
       <div>
         UserList
@@ -38,8 +38,8 @@ export class List extends Component {
             </ul>
           ))}
       </div>
-    )
+    );
   }
 }
 
-export default List
+export default List;
