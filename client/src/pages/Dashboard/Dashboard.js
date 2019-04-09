@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Auth from "../../auth/Authenticate";
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-import { withRouter } from "react-router";
+import { BrowserRouter, Switch, withRouter } from "react-router-dom";
 import RouteWithSubRoutes from "../../utils/RouteWithSubRoutes";
 import Main from "../../layouts/Main";
 
