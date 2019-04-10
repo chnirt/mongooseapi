@@ -15,29 +15,11 @@ const postRoutes = require("./server/routes/posts");
 // Requiring passport as we've configured it
 var passport = require("./server/config/passport");
 
-// Configure mongoose's promise to global promise
-mongoose.promise = global.Promise;
-
 // Configure isProduction variable
 const isProduction = process.env.NODE_ENV === "production";
 
 // Configure Mongoose
-mongoose.connect(
-  process.env.MONGO_URI,
-  {
-    useNewUrlParser: true,
-    // useFindAndModify: false,
-    useCreateIndex: true
-  },
-  err => {
-    if (err) {
-      console.log("Error " + err);
-    } else {
-      console.log("Connected successfully to server ☁️");
-    }
-  }
-);
-mongoose.set("debug", true);
+require("./server/config/database");
 
 // Initiate our app
 const app = express();
